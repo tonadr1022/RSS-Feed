@@ -12,6 +12,7 @@ import mongoose from "mongoose";
 const PORT = process.env.PORT || 3500;
 import userRoutes from "./routes/userRoutes.js";
 import feedRoutes from "./routes/feedRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import router from "./routes/root.js";
 console.log(`Running on ${process.env.NODE_ENV} mode`);
 
@@ -35,6 +36,7 @@ app.use(express.static("public"));
 app.use("/", router);
 app.use("/api/users", userRoutes);
 app.use("/api/feeds", feedRoutes);
+app.use("/api/categories", categoryRoutes);
 
 // // all routes that aren't valid
 // app.all("*", (req, res) => {

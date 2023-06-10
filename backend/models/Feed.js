@@ -6,7 +6,7 @@ const feedSchema = new mongoose.Schema(
     url: { type: String, required: true },
     baseLink: { type: String, required: true },
     title: { type: String, required: true },
-    category: { type: String },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     description: { type: String },
     isFavorite: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

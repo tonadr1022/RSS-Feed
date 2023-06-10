@@ -7,6 +7,7 @@ import {
   updateFeed,
   deleteFeed,
   getFeedContent,
+  getOneFeedContent,
 } from "../controllers/feedsController.js";
 import { feedCreateMiddleware } from "../middleware/feedParserMiddleware.js";
 router
@@ -17,4 +18,6 @@ router
   .delete(protect, deleteFeed);
 
 router.get("/content", protect, getFeedContent);
+router.get("/content/:id", protect, getOneFeedContent);
+
 export default router;

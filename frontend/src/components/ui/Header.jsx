@@ -101,8 +101,11 @@ const Header = () => {
                 onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">My Feeds</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Test</Typography>
+              <MenuItem
+                component={Link}
+                to="/categories"
+                onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">My Categories</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -143,13 +146,15 @@ const Header = () => {
               My Feeds
             </Button>{" "}
             <Button
+              component={Link}
+              to="/categories"
               sx={{
                 color: "white",
                 borderRadius: 5,
                 display: "block",
               }}
               onClick={handleCloseNavMenu}>
-              Test
+              My Categories
             </Button>
           </Box>
         )}

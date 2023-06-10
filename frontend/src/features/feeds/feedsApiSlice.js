@@ -13,7 +13,7 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError;
       },
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 60,
       transformResponse: (responseData) => {
         // console.log("res data", responseData);
         const loadedFeeds = responseData.map((feed) => {
@@ -37,7 +37,28 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Feed"],
     }),
+    deleteFeed: builder.mutation({
+      query: (data) => ({
+        url: `${FEEDS_URL}`,
+        method: "DELETE",
+        body: data,
+      }),
+      invalidatesTags: ["Feed"],
+    }),
+    updateFeed: builder.mutation({
+      query: (data) => ({
+        url: `${FEEDS_URL}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Feed"],
+    }),
   }),
 });
 
-export const { useGetFeedsQuery, useAddFeedMutation } = feedsApiSlice;
+export const {
+  useGetFeedsQuery,
+  useAddFeedMutation,
+  useDeleteFeedMutation,
+  useUpdateFeedMutation,
+} = feedsApiSlice;

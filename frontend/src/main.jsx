@@ -18,6 +18,8 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedsPage from "./pages/FeedsPage.jsx";
+import FeedViewPage from "./pages/FeedViewPage.jsx";
+import CategoriesPage from "./pages/CategoriesPage.jsx";
 import PrivateRoute from "./components/ui/PrivateRoute.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +30,8 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/feeds" element={<FeedsPage />} />
+        <Route path="/feeds/:feedId" element={<FeedViewPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
       </Route>
     </Route>
   )
