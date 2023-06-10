@@ -6,8 +6,6 @@ const app = express();
 import { logger, logEvents } from "./middleware/logger.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import cookieParser from "cookie-parser"; // learning
-import cors from "cors";
-import corsOptions from "./config/corsOptions.js";
 import connectDB from "./config/dbConn.js";
 import mongoose from "mongoose";
 const PORT = process.env.PORT || 3500;
@@ -20,8 +18,6 @@ console.log(`Running on ${process.env.NODE_ENV} mode`);
 connectDB();
 
 app.use(logger);
-
-app.use(cors(corsOptions));
 
 // parse json middleware
 app.use(express.json());
@@ -38,26 +34,18 @@ app.use("/api/users", userRoutes);
 app.use("/api/feeds", feedRoutes);
 app.use("/api/categories", categoryRoutes);
 
-// if production mode, set CWD, use static files from static build, and catch all requests that aren't to api
+// if production mode, set CWD, use static files from static build
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "frontend", "dist")));
-  app.get("*");
+  // catch all requests that aren't to api
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "dist"))
+  );
+} else {
+  app.get("/", (req, res) => res.send("Server is ready"));
 }
 
-app.get("/", (req, res) => res.send("Server is ready"));
-// // all routes that aren't valid
-// app.all("*", (req, res) => {
-//   res.status(404);
-//   // if req accepts html, send html 404 page. If json, send 404 json, otherwise txt 404
-//   if (req.accepts("html")) {
-//     res.sendFile(path.join(__dirname, "views", "404.html"));
-//   } else if (req.accepts("json")) {
-//     res.json({ message: "404 Not Found" });
-//   } else {
-//     res.type("txt").send("404 not found");
-//   }
-// });
 app.use(notFound);
 app.use(errorHandler);
 
