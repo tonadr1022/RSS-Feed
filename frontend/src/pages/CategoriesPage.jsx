@@ -1,4 +1,3 @@
-import React from "react";
 import CategoriesList from "../features/categories/CategoriesList";
 import { Button, Box } from "@mui/material";
 import AddCategoryForm from "../features/categories/AddCategoryForm";
@@ -6,9 +5,7 @@ import { useState } from "react";
 
 const CategoriesPage = () => {
   const [formOpen, setFormOpen] = useState(false);
-  const handleAddCategory = () => {
-    console.log("add cat");
-  };
+
   return (
     <Box
       component={"main"}

@@ -5,7 +5,7 @@ import { useAddCategoryMutation } from "./categoriesApiSlice";
 import { toast } from "react-toastify";
 const AddCategoryForm = ({ setFormOpen }) => {
   const [name, setName] = useState("");
-  const [addCategory, { isLoading }] = useAddCategoryMutation();
+  const [addCategory] = useAddCategoryMutation();
   const handleNameChange = (e) => setName(e.target.value);
   const handleSubmit = async (e) => {
     e.preventDefault();

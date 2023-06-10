@@ -1,13 +1,14 @@
 import asyncHandler from "express-async-handler";
 import Feed from "../models/Feed.js";
 import Parser from "rss-parser";
+import Category from "../models/Category.js";
 const parser = new Parser();
 
 // @desc Get All feeds
 // route GET /api/feeds
 // @access Private
 const getFeeds = asyncHandler(async (req, res) => {
-  const feeds = await Feed.find({ user: req.user }).exec();
+  const feeds = await Feed.find({ user: req.user }).populate("category").exec();
   res.status(200).json(feeds);
 });
 
@@ -26,8 +27,11 @@ const createFeed = asyncHandler(async (req, res) => {
     isFavorite,
     user: req.user,
   });
-  console.log(feed);
-
+  const cat = await Category.findById(category);
+  if (!cat?.feeds.includes(feed._id)) {
+    cat.feeds.push(feed._id);
+    cat.save();
+  }
   if (feed) {
     res.status(201).json({
       _id: feed._id,
@@ -50,6 +54,11 @@ const createFeed = asyncHandler(async (req, res) => {
 const updateFeed = asyncHandler(async (req, res) => {
   const { _id, category, title, description, isFavorite } = req.body;
   console.log(_id);
+  const cat = await Category.findById(category);
+  if (!cat?.feeds.includes(_id)) {
+    cat.feeds.push(_id);
+    cat.save();
+  }
   const feed = await Feed.findOneAndUpdate(
     { _id: _id },
     {

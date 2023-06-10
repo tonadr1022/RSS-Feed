@@ -4,6 +4,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: "" });
 
 export const apiSlice = createApi({
   baseQuery,
+  keepUnusedDataFor: 300,
   tagTypes: ["User", "Feed", "FeedContent", "Category"],
   // eslint-disable-next-line no-unused-vars
   endpoints: (builder) => ({}),

@@ -5,15 +5,17 @@ import {
   Box,
   Typography,
   Grid,
-  Container,
   Modal,
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { useAddFeedMutation, useUpdateFeedMutation } from "./feedsApiSlice";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+
 const style = {
   display: "flex",
   flexDirection: "column",
@@ -29,8 +31,7 @@ const style = {
   p: 4,
 };
 
-const FeedModal = ({ feed, setModalIsOpen, setSelectedFeed }) => {
-  console.log(feed);
+const FeedModal = ({ feed, categories, setModalIsOpen, setSelectedFeed }) => {
   const [addFeed, { isLoading: addIsLoading }] = useAddFeedMutation();
   const [updateFeed, { isLoading: patchIsLoading }] = useUpdateFeedMutation();
 
@@ -54,7 +55,6 @@ const FeedModal = ({ feed, setModalIsOpen, setSelectedFeed }) => {
       toast.error(err?.data?.message);
     }
   };
-
   const handleClose = () => {
     setSelectedFeed(null);
     setModalIsOpen(false);
@@ -75,7 +75,7 @@ const FeedModal = ({ feed, setModalIsOpen, setSelectedFeed }) => {
                 required
                 defaultValue={feed ? feed?.url : ""}
                 fullWidth
-                autoFocus
+                autoFocus={!!feed}
                 label="Url"
               />
             </Grid>
@@ -92,8 +92,8 @@ const FeedModal = ({ feed, setModalIsOpen, setSelectedFeed }) => {
               {...register("title")}
               required
               fullWidth
+              autoFocus={!feed}
               defaultValue={feed ? feed?.title : ""}
-              autoFocus
               label="Title"
             />
           </Grid>
@@ -101,28 +101,38 @@ const FeedModal = ({ feed, setModalIsOpen, setSelectedFeed }) => {
             <TextField
               {...register("description")}
               fullWidth
-              autoFocus
               defaultValue={feed ? feed?.description : ""}
               label="Description"
               multiline
               minRows={5}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <InputLabel id="shoe-label">Shoe</InputLabel>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  {...register("isFavorite")}
+                  defaultChecked={feed?.isFavorite}
+                />
+              }
+              label="Favorite"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <InputLabel id="category-label">Category</InputLabel>
             <Select
-              labelId="shoe-label"
+              labelId="category-label"
               sx={{ width: "50%" }}
               required
-              defaultValue={feed?.category || ""}
-              {...register("shoe")}>
+              defaultValue={feed?.category?._id || ""}
+              {...register("category")}>
               {categories.map((category, i) => (
-                <MenuItem key={category} value={category}>
-                  {shoe.nickname}
+                <MenuItem key={i} value={category._id}>
+                  {category.name}
                 </MenuItem>
               ))}
             </Select>
-          </Grid> */}
+          </Grid>
           <Grid item xs={12}>
             <Button type="submit" sx={{ width: "30%" }} variant="contained">
               {feed ? "Update" : "Add"}

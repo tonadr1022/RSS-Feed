@@ -17,6 +17,7 @@ const FeedsList = ({ handleUpdateFeed }) => {
     error,
     refetch,
   } = useGetFeedsQuery();
+
   const handleDeleteFeed = async (id) => {
     try {
       const response = await deleteFeed({ id: id });
@@ -28,7 +29,6 @@ const FeedsList = ({ handleUpdateFeed }) => {
   };
   const handleFeedClick = (feed) => {
     navigate(`/feeds/${feed.id}`);
-    console.log(feed.title);
   };
 
   return (

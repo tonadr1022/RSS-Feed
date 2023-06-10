@@ -2,7 +2,10 @@ import { Box, Button, TextField } from "@mui/material";
 import FeedsList from "../features/feeds/FeedsList";
 import { useState } from "react";
 import FeedModal from "../features/feeds/FeedModal";
+import { useGetCategoriesQuery } from "../features/categories/categoriesApiSlice";
 const FeedsPage = () => {
+  const { data: categories } = useGetCategoriesQuery();
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedFeed, setSelectedFeed] = useState(null);
 
@@ -32,6 +35,7 @@ const FeedsPage = () => {
       {modalIsOpen && (
         <FeedModal
           feed={selectedFeed}
+          categories={categories}
           setModalIsOpen={setModalIsOpen}
           setSelectedFeed={setSelectedFeed}
         />

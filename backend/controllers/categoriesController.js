@@ -5,7 +5,10 @@ import Category from "../models/Category.js";
 // route GET /api/categories
 // @access Private
 const getCategories = asyncHandler(async (req, res) => {
-  const categories = await Category.find({ user: req.user }).exec();
+  const categories = await Category.find({ user: req.user })
+    .populate("feeds")
+    .exec();
+  console.log(categories);
   res.status(200).json(categories);
 });
 
