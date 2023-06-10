@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
+import { Star } from "@mui/icons-material";
 import {
   Typography,
   Button,
   Card,
   CardContent,
   CardActions,
+  Box,
 } from "@mui/material";
 const FeedItem = ({
   handleDeleteFeed,
@@ -15,7 +17,12 @@ const FeedItem = ({
   return (
     <Card>
       <CardContent onClick={() => handleFeedClick(feed)}>
-        <Typography variant="h4">{feed.title}</Typography>
+        <Box sx={{ display: "flex" }}>
+          <Typography variant="h4" sx={{ flexGrow: 1 }}>
+            {feed.title}
+          </Typography>
+          {feed.isFavorite ? <Star fontSize="large" /> : null}
+        </Box>
         {feed?.description ? (
           <Typography variant="body1">{feed.description}</Typography>
         ) : null}

@@ -16,11 +16,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../features/users/usersApiSlice";
 import { clearCredentials } from "../../app/api/authSlice.js";
+import { apiSlice } from "../../app/api/apiSlice";
 // Header adapted from MUI Example
 const Header = () => {
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
   const [logout] = useLogoutMutation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -45,6 +46,7 @@ const Header = () => {
     try {
       setAnchorElUser(null);
       const response = await logout().unwrap(); // server logout
+      dispatch(apiSlice.util.resetApiState());
       console.log(response);
       dispatch(clearCredentials()); // handle auth slice (local storage)
       navigate("/login");
@@ -69,9 +71,10 @@ const Header = () => {
         <Typography
           variant="h4"
           noWrap
-          href="/"
-          component="h4"
+          to="/"
+          component={Link}
           sx={{
+            cursor: "pointer",
             mr: 2,
             flexGrow: userInfo ? 0 : 1,
             display: { xs: "none", md: "flex" },
@@ -144,7 +147,7 @@ const Header = () => {
               }}
               onClick={handleCloseNavMenu}>
               My Feeds
-            </Button>{" "}
+            </Button>
             <Button
               component={Link}
               to="/categories"

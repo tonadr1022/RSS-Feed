@@ -11,17 +11,19 @@ import {
   MenuItem,
   Checkbox,
   FormControlLabel,
+  IconButton,
 } from "@mui/material";
 import { useAddFeedMutation, useUpdateFeedMutation } from "./feedsApiSlice";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { Cancel } from "@mui/icons-material";
 
 const style = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   position: "relative",
-  top: "50%",
+  top: "30%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "375px",
@@ -48,6 +50,7 @@ const FeedModal = ({ feed, categories, setModalIsOpen, setSelectedFeed }) => {
         setModalIsOpen(false);
       } else {
         response = await addFeed(data).unwrap();
+        setModalIsOpen(false);
       }
       console.log(response);
     } catch (err) {
@@ -63,11 +66,23 @@ const FeedModal = ({ feed, categories, setModalIsOpen, setSelectedFeed }) => {
   return (
     <Modal open={true} onClose={handleClose}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={style}>
-        <Typography variant="h4" sx={{ marginBottom: 2 }}>
-          {feed ? "Update Feed" : "Add Feed"}
-        </Typography>
         {(addIsLoading || patchIsLoading) && <p>LOADING</p>}
-        <Grid container sx={{ textAlign: "center" }} spacing={2}>
+        <Grid container sx={{ textAlign: "center" }} spacing={1}>
+          <Grid item xs={2}>
+            <IconButton
+              sx={{ marginLeft: -5, marginTop: -3 }}
+              onClick={() => setModalIsOpen(false)}>
+              <Cancel fontSize="large" />
+            </IconButton>
+          </Grid>
+          <Grid item xs={10}>
+            <Typography
+              textAlign={"start"}
+              variant="h4"
+              sx={{ marginBottom: 2, paddingLeft: 4 }}>
+              {feed ? "Update Feed" : "Add Feed"}
+            </Typography>
+          </Grid>
           {!feed && (
             <Grid item xs={12}>
               <TextField

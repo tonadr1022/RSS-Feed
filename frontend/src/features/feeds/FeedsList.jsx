@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { toast } from "react-toastify";
 import { useDeleteFeedMutation, useGetFeedsQuery } from "./feedsApiSlice";
-import { Typography, Button, Grid } from "@mui/material";
-import { useState } from "react";
+import { Typography, Grid, CircularProgress } from "@mui/material";
+
 import FeedItem from "./FeedItem";
 import { useNavigate } from "react-router-dom";
 
@@ -15,14 +15,11 @@ const FeedsList = ({ handleUpdateFeed }) => {
     isSuccess,
     isError,
     error,
-    refetch,
   } = useGetFeedsQuery();
 
   const handleDeleteFeed = async (id) => {
     try {
-      const response = await deleteFeed({ id: id });
-      refetch();
-      console.log("response", response);
+      await deleteFeed({ id: id }).unwrap();
     } catch (err) {
       toast.error(err?.data?.message);
     }
@@ -32,20 +29,28 @@ const FeedsList = ({ handleUpdateFeed }) => {
   };
 
   return (
-    feeds && (
-      <Grid container>
-        {feeds.map((feed) => (
-          <Grid item key={feed.id} xs={12} sm={6} md={4}>
-            <FeedItem
-              feed={feed}
-              handleFeedClick={handleFeedClick}
-              handleDeleteFeed={handleDeleteFeed}
-              handleUpdateFeed={handleUpdateFeed}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    )
+    <>
+      {isLoading ? (
+        <CircularProgress />
+      ) : isSuccess ? (
+        <Grid container spacing={2}>
+          {feeds.map((feed) => (
+            <Grid item key={feed.id} xs={12} sm={6} md={4}>
+              <FeedItem
+                feed={feed}
+                handleFeedClick={handleFeedClick}
+                handleDeleteFeed={handleDeleteFeed}
+                handleUpdateFeed={handleUpdateFeed}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      ) : isError ? (
+        <Typography variant="h6" component="p">
+          error: {error.status} {error.message}
+        </Typography>
+      ) : null}
+    </>
   );
 };
 export default FeedsList;

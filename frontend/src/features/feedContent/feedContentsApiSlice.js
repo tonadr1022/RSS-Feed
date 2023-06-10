@@ -1,7 +1,5 @@
-import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
-const FEED_CONTENTS_URL = "api/feeds/content";
-
+const FEED_CONTENTS_URL = "/api/feeds/content";
 // const feedContentsAdapter = createEntityAdapter({});
 
 // const initialState = feedContentsAdapter.getInitialState();
@@ -9,10 +7,12 @@ const FEED_CONTENTS_URL = "api/feeds/content";
 export const feedContentsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllFeedContents: builder.query({
-      query: () => `/${FEED_CONTENTS_URL}`,
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
+      query: () => ({
+        url: `${FEED_CONTENTS_URL}`,
+        validateStatus: (response, result) => {
+          return response.status <= 300 && !result.isError;
+        },
+      }),
       // transformResponse: (responseData) =>
       //   feedContentsAdapter.setAll(initialState, responseData),
       providesTags: ["FeedContent"],
@@ -21,11 +21,20 @@ export const feedContentsApiSlice = apiSlice.injectEndpoints({
       //   ...result.ids.map((id) => ({ type: "FeedContent", id })),
       // ],
     }),
+    getCategoryFeedContents: builder.query({
+      query: (id) => ({
+        url: `${FEED_CONTENTS_URL}/?categoryId=${id}`,
+        validateStatus: (response, result) => {
+          return response.status <= 300 && !result.isError;
+        },
+      }),
+      providesTags: (result, error, id) => [{ type: "FeedContent", id }],
+    }),
     getFeedContents: builder.query({
       query: (id) => ({
-        url: `/${FEED_CONTENTS_URL}/${id}`,
+        url: `${FEED_CONTENTS_URL}/${id}`,
         validateStatus: (response, result) => {
-          return response.status === 200 && !result.isError;
+          return response.status <= 300 && !result.isError;
         },
       }),
       providesTags: (result, error, id) => [{ type: "FeedContent", id }],
@@ -33,8 +42,11 @@ export const feedContentsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllFeedContentsQuery, useGetFeedContentsQuery } =
-  feedContentsApiSlice;
+export const {
+  useGetAllFeedContentsQuery,
+  useGetFeedContentsQuery,
+  useGetCategoryFeedContentsQuery,
+} = feedContentsApiSlice;
 
 // // returns query result
 // export const selectFeedContentsResult =

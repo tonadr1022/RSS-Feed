@@ -19,5 +19,5 @@ router
 
 router.get("/content", protect, getFeedContent);
 router.get("/content/:id", protect, getOneFeedContent);
-
+router.get("/content/:categoryId", protect, getFeedContent);
 export default router;

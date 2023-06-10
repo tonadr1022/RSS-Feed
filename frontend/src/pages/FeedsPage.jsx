@@ -1,8 +1,9 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import FeedsList from "../features/feeds/FeedsList";
 import { useState } from "react";
 import FeedModal from "../features/feeds/FeedModal";
 import { useGetCategoriesQuery } from "../features/categories/categoriesApiSlice";
+import { AddCircleOutline } from "@mui/icons-material";
 const FeedsPage = () => {
   const { data: categories } = useGetCategoriesQuery();
 
@@ -22,12 +23,15 @@ const FeedsPage = () => {
         flexDirection: "column",
         alignItems: "center",
       }}>
-      <Button
+      <Typography variant="h2" component={"h1"}>
+        Feeds
+      </Typography>
+      <IconButton
         variant="contained"
-        sx={{ width: "30%", height: 60, marginBottom: 2 }}
+        sx={{ marginBottom: 2, marginTop: 2 }}
         onClick={() => setModalIsOpen(!modalIsOpen)}>
-        Add Feed
-      </Button>
+        <AddCircleOutline fontSize="large" />
+      </IconButton>
       <FeedsList
         handleUpdateFeed={handleUpdateFeed}
         setModalIsOpen={setModalIsOpen}

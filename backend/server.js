@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
 dotenv.config();
 const app = express();
 import { logger, logEvents } from "./middleware/logger.js";
@@ -13,7 +14,7 @@ const PORT = process.env.PORT || 3500;
 import userRoutes from "./routes/userRoutes.js";
 import feedRoutes from "./routes/feedRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import router from "./routes/root.js";
+
 console.log(`Running on ${process.env.NODE_ENV} mode`);
 
 connectDB();
@@ -33,11 +34,18 @@ app.use(cookieParser());
 //app.use("/", express.static(path.join(__dirname, "public")));
 app.use(express.static("public"));
 
-app.use("/", router);
 app.use("/api/users", userRoutes);
 app.use("/api/feeds", feedRoutes);
 app.use("/api/categories", categoryRoutes);
 
+// if production mode, set CWD, use static files from static build, and catch all requests that aren't to api
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "frontend", "dist")));
+  app.get("*");
+}
+
+app.get("/", (req, res) => res.send("Server is ready"));
 // // all routes that aren't valid
 // app.all("*", (req, res) => {
 //   res.status(404);

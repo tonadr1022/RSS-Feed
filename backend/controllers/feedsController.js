@@ -85,71 +85,71 @@ const deleteFeed = asyncHandler(async (req, res) => {
   if (!id) {
     return res.status(400).json({ message: "Feed id required" });
   }
-
   const feed = await Feed.findById({ _id: id }).exec();
   if (!feed) {
     return res.status(400).json({ message: "Feed not found" });
+  } else if (feed.isFavorite === true) {
+    res.status(400).json({ message: "Invalid URL" });
+  } else {
+    await feed.deleteOne();
+    res.status(204).json();
   }
-  if (feed.isFavorite === true) {
-    return res.status(400).json({ message: "Cannot delete a favorite feed" });
-  }
-
-  await feed.deleteOne();
-  res.status(204).json();
 });
 
+// @desc Get favorite feeds content
+// route GET /api/feeds/content
+// @access Private
 const getFeedContent = asyncHandler(async (req, res) => {
-  const user = req.user;
-  const feeds = await Feed.find({ user: user._id }).exec();
+  const { categoryId } = req.query;
+  let category;
+  let feeds;
 
+  if (categoryId) {
+    category = await Category.findById(categoryId).exec();
+    feeds = await Feed.find({
+      user: req.user,
+      category: categoryId,
+    }).exec();
+  } else {
+    feeds = await Feed.find({ user: req.user, isFavorite: true }).exec();
+  }
   const allFeedsContent = [];
   for (const feed of feeds) {
     try {
       const feedContentRaw = await parser.parseURL(feed.url);
-      const feedContent = [];
       for (const item of feedContentRaw.items) {
         if (!item.pubDate) continue;
         const link = item?.link || item?.guid;
-        feedContent.push({
+        allFeedsContent.push({
+          feedTitle: feed.title,
           title: item.title,
           link: link,
           pubDate: item.pubDate,
           isoDate: item.isoDate,
         });
       }
-      const feedContentObj = {
-        id: feed._id,
-        title: feed.title,
-        content: feedContent,
-      };
-      allFeedsContent.push(feedContentObj);
-      // console.log(feedContent.items);
-      // for (const item of feedContent.items) {
-      //   if (!item.pubDate) continue;
-      //   const link = item?.link || item?.guid;
-      //   totalContent.push({
-      //     feedTitle: feed.title,
-      //     title: item.title,
-      //     link: link,
-      //     pubDate: item.pubDate,
-      //     isoDate: item.isoDate,
-      //   });
-      //   //    totalContent.push(item.isoDate)
-      // }
+      // const feedContentObj = {
+      //   id: feed._id,
+      //   title: feed.title,
+      //   content: feedContent,
+      // };
+
+      //   allFeedsContent.push(feedContentObj);
     } catch (err) {
       console.log(err);
       res.status(500);
       throw new Error("Failed getting content");
     }
   }
-  // console.log(totalContent);
-  // const content = totalContent.sort(
-  //   (item1, item2) =>
-  //     new Date(item2.isoDate).getTime() - new Date(item1.isoDate).getTime()
-  // );
-
-  // console.log(totalContent);
-  res.status(200).json(allFeedsContent);
+  const finalContent = allFeedsContent.sort(
+    (item1, item2) =>
+      new Date(item2.isoDate).getTime() - new Date(item1.isoDate).getTime()
+  );
+  if (category) {
+    res.status(200).json({ [category.name]: finalContent });
+  } else {
+    res.status(200).json(finalContent);
+  }
 });
 
 const getOneFeedContent = asyncHandler(async (req, res) => {
@@ -171,7 +171,7 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
     res.json({ [feed.title]: feedContent });
   } else {
     res.status(400);
-    throw new Error("invalid user data");
+    throw new Error("invalid feed id");
   }
 });
 

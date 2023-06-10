@@ -1,24 +1,38 @@
 import { apiSlice } from "../../app/api/apiSlice";
 const CATEGORIES_URL = "api/categories";
+const FEED_CONTENTS_URL = "/api/feeds/content";
 
 export const categoriesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query({
-      query: () => `${CATEGORIES_URL}`,
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
+      query: () => ({
+        url: `${CATEGORIES_URL}`,
+        validateStatus: (response, result) => {
+          return response.status <= 300 && !result.isError;
+        },
+      }),
+
       providesTags: ["Category"],
     }),
+    // getCategoryFeedContents: builder.query({
+    //   query: (id) => ({
+    //     url: `${CATEGORIES_URL}/content/${id}`,
+    //     validateStatus: (response, result) => {
+    //       return response.status <= 300 && !result.isError;
+    //     },
+    //   }),
+    //   providesTags: (result, error, id) => [{ type: "Category", id }],
+    // }),
     addCategory: builder.mutation({
       query: (data) => ({
         url: `${CATEGORIES_URL}`,
         method: "POST",
         body: data,
+        validateStatus: (response, result) => {
+          return response.status < 300 && !result.isError;
+        },
       }),
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
+
       invalidatesTags: ["Category"],
     }),
     updateCategory: builder.mutation({
@@ -26,10 +40,10 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
         url: `${CATEGORIES_URL}`,
         method: "PATCH",
         body: data,
+        validateStatus: (response, result) => {
+          return response.status < 300 && !result.isError;
+        },
       }),
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
       invalidatesTags: ["Category"],
     }),
     deleteCategory: builder.mutation({
@@ -37,6 +51,9 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
         url: `${CATEGORIES_URL}`,
         method: "DELETE",
         body: data,
+        validateStatus: (response, result) => {
+          return response.status < 300 && !result.isError;
+        },
       }),
       invalidatesTags: ["Category"],
     }),
