@@ -13,9 +13,11 @@ const CategoryFeedsViewPage = () => {
     isError,
     isSuccess,
   } = useGetCategoryFeedContentsQuery(id);
-  console.log("status", isLoading, isFetching, isError, isSuccess);
+
   const title = feedContent && Object.keys(feedContent)[0];
-  console.log("feed content", feedContent, title);
+  if (feedContent) {
+    console.log(feedContent[title]);
+  }
   return (
     feedContent && (
       <>

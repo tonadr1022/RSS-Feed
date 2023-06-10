@@ -15,6 +15,11 @@ const FeedsPage = () => {
     setModalIsOpen(true);
   };
 
+  const handleModalClose = () => {
+    setSelectedFeed(null);
+    setModalIsOpen(false);
+  };
+
   return (
     <Box
       component="main"
@@ -29,7 +34,7 @@ const FeedsPage = () => {
       <IconButton
         variant="contained"
         sx={{ marginBottom: 2, marginTop: 2 }}
-        onClick={() => setModalIsOpen(!modalIsOpen)}>
+        onClick={() => setModalIsOpen(true)}>
         <AddCircleOutline fontSize="large" />
       </IconButton>
       <FeedsList
@@ -40,6 +45,7 @@ const FeedsPage = () => {
         <FeedModal
           feed={selectedFeed}
           categories={categories}
+          handleModalClose={handleModalClose}
           setModalIsOpen={setModalIsOpen}
           setSelectedFeed={setSelectedFeed}
         />

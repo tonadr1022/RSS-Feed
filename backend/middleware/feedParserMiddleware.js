@@ -5,7 +5,6 @@ import Feed from "../models/Feed.js";
 const feedCreateMiddleware = async (req, res, next) => {
   try {
     const { url, title, description } = req.body;
-    console.log("req url", url);
     if (!url) {
       res.status(400).json({ message: "Must provide a url" });
     }
@@ -16,9 +15,10 @@ const feedCreateMiddleware = async (req, res, next) => {
       res.status(409);
       next(new Error("Duplicate feed url"));
     }
+
     try {
       const feed = await parser.parseURL(url);
-      console.log(feed); // attach feed data to the request
+      // attach feed data to the request
       req.body.title = title ? title : feed.title;
       req.body.baseLink = feed.link;
       req.body.description = description ? description : feed.description;

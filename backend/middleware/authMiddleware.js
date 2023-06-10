@@ -5,7 +5,6 @@ import generateAccessToken from "../utils/generateAccessToken.js";
 
 // protects routes, must be logged in to access
 const protect = asyncHandler(async (req, res, next) => {
-  console.log("req cookies", req.cookies);
   let accessToken;
   accessToken = req.cookies.accessToken;
   let refreshToken;
@@ -18,7 +17,8 @@ const protect = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("Not authorized, invalid access token");
+      return res.redirect("/login");
+      //  throw new Error("Not authorized, invalid access token");
     }
   } else if (refreshToken) {
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
@@ -27,7 +27,8 @@ const protect = asyncHandler(async (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error("Not authorized, no token");
+    return res.redirect("/login");
+    // throw new Error("Not authorized, no token");
   }
 });
 

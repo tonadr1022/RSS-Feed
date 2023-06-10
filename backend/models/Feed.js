@@ -16,9 +16,5 @@ const feedSchema = new mongoose.Schema(
   }
 );
 
-// feedSchema.plugin(AutoIncrement, {
-//     inc_field: 'ticket',
-//     id: 'tic'
-// })
 const Feed = mongoose.model("Feed", feedSchema);
 export default Feed;

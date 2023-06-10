@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import Feed from "../models/Feed.js";
 import Parser from "rss-parser";
 import Category from "../models/Category.js";
+import sortFeedContent from "../utils/sortFeedContent.js";
+import Article from "../models/Article.js";
 const parser = new Parser();
 
 // @desc Get All feeds
@@ -83,13 +85,13 @@ const deleteFeed = asyncHandler(async (req, res) => {
   const { id } = req.body;
   console.log(id, req.body);
   if (!id) {
-    return res.status(400).json({ message: "Feed id required" });
+    return res.status(400).json({ message: "Feed ID required" });
   }
   const feed = await Feed.findById({ _id: id }).exec();
   if (!feed) {
     return res.status(400).json({ message: "Feed not found" });
   } else if (feed.isFavorite === true) {
-    res.status(400).json({ message: "Invalid URL" });
+    res.status(400).json({ message: "Cannot delete a favorite feed" });
   } else {
     await feed.deleteOne();
     res.status(204).json();
@@ -114,7 +116,9 @@ const getFeedContent = asyncHandler(async (req, res) => {
     feeds = await Feed.find({ user: req.user, isFavorite: true }).exec();
   }
   const allFeedsContent = [];
+  const feedTitles = [];
   for (const feed of feeds) {
+    feedTitles.push(feed.title);
     try {
       const feedContentRaw = await parser.parseURL(feed.url);
       for (const item of feedContentRaw.items) {
@@ -141,20 +145,22 @@ const getFeedContent = asyncHandler(async (req, res) => {
       throw new Error("Failed getting content");
     }
   }
-  const finalContent = allFeedsContent.sort(
-    (item1, item2) =>
-      new Date(item2.isoDate).getTime() - new Date(item1.isoDate).getTime()
-  );
+  const sortedContent = sortFeedContent(allFeedsContent);
+
   if (category) {
-    res.status(200).json({ [category.name]: finalContent });
+    res.status(200).json({ [category.name]: sortedContent });
   } else {
-    res.status(200).json(finalContent);
+    res
+      .status(200)
+      .json({ feedTitles: feedTitles, sortedContent: sortedContent });
   }
 });
 
 const getOneFeedContent = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const feed = await Feed.findById(id);
+  // const userFullName = req.user.firstName + " " + req.user.lastName;
+  // const userUsername = req.user.username;
   if (feed) {
     const feedContentRaw = await parser.parseURL(feed.url);
     const feedContent = [];
@@ -167,8 +173,22 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
         pubDate: item.pubDate,
         isoDate: item.isoDate,
       });
+
+      // // save article to db for collection
+      // const existing = await Article.findOne({ url: link }).exec();
+      // if (!existing) {
+      //   const article = {
+      //     url: link,
+      //     title: item.title,
+      //     isoDate: new Date(item.isoDate),
+      //     userFullName: userFullName,
+      //     userUsername: userUsername,
+      //   };
+      //   await Article.create(article);
+      // }
     }
-    res.json({ [feed.title]: feedContent });
+    const sortedContent = sortFeedContent(feedContent);
+    res.json({ [feed.title]: sortedContent });
   } else {
     res.status(400);
     throw new Error("invalid feed id");
