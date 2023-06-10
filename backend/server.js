@@ -14,8 +14,24 @@ import feedRoutes from "./routes/feedRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 
 console.log(`Running on ${process.env.NODE_ENV} mode`);
-
 connectDB();
+/**
+ * @param req express http request
+ * @returns true if the http request is secure (comes form https)
+ */
+function isSecure(req) {
+  if (req.headers["x-forwarded-proto"]) {
+    return req.headers["x-forwarded-proto"] === "https";
+  }
+  return req.secure;
+}
+
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV !== "development" && !isSecure(req)) {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
+});
 
 app.use(logger);
 
