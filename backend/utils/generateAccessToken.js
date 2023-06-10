@@ -4,7 +4,7 @@ const generateAccessToken = (res, userId) => {
   const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "5m",
   });
-
+  console.log("access token", accessToken);
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development", // site has to be https in production

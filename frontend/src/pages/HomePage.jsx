@@ -12,6 +12,9 @@ const FavoritesFeedContent = () => {
     isError,
     error,
   } = useGetAllFeedContentsQuery();
+  if (isError) {
+    console.log(error);
+  }
   return (
     <>
       {isLoading ? (
@@ -20,7 +23,7 @@ const FavoritesFeedContent = () => {
         <FeedContentList feedContent={feedContent} />
       ) : isError ? (
         <Typography variant="h6" component="p">
-          error: {error.status} {error.message}
+          error: {error.status}
         </Typography>
       ) : null}
     </>
