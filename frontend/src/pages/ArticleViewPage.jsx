@@ -19,6 +19,7 @@ const ArticleViewPage = () => {
   return (
     <>
       <Box
+        component="main"
         sx={{
           display: "flex",
           flexDirection: "column",

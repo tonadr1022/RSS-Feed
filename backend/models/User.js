@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
+  prefersDarkMode: { type: Boolean, default: false },
 });
 // if password not modified, continue. If password modified (created), hash it
 userSchema.pre("save", async function (next) {

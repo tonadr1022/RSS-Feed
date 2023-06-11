@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetCategoryFeedContentsQuery } from "../features/feedContent/feedContentsApiSlice";
 import FeedContentList from "../features/feedContent/FeedContentList";
-import { Typography } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 
 const CategoryFeedsViewPage = () => {
   const { categoryId: id } = useParams();
@@ -9,9 +9,9 @@ const CategoryFeedsViewPage = () => {
   const {
     data: feedContent,
     isLoading,
-    isFetching,
     isError,
     isSuccess,
+    error,
   } = useGetCategoryFeedContentsQuery(id);
 
   const title = feedContent && Object.keys(feedContent)[0];
@@ -19,12 +19,20 @@ const CategoryFeedsViewPage = () => {
     console.log(feedContent[title]);
   }
   return (
-    feedContent && (
-      <>
-        <Typography variant="h1">{title}</Typography>
+    <Box component="main" sx={{ display: "flex", flexDirection: "column" }}>
+      <Typography variant="h2" component="h1" align="center">
+        {title}
+      </Typography>
+      {isLoading ? (
+        <CircularProgress />
+      ) : isSuccess ? (
         <FeedContentList type={"category"} feedContent={feedContent[title]} />
-      </>
-    )
+      ) : isError ? (
+        <Typography variant="h6" component="p">
+          error: {error.status} {error.message}
+        </Typography>
+      ) : null}
+    </Box>
   );
 };
 

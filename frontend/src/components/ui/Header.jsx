@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../features/users/usersApiSlice";
 import { clearCredentials } from "../../app/api/authSlice.js";
 import { apiSlice } from "../../app/api/apiSlice";
+import ThemeToggle from "./ThemeToggle";
 // Header adapted from MUI Example
 const Header = () => {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const Header = () => {
       dispatch(apiSlice.util.resetApiState());
       console.log(response);
       dispatch(clearCredentials()); // handle auth slice (local storage)
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -100,6 +101,12 @@ const Header = () => {
               sx={{ display: { xs: "block", md: "none" } }}>
               <MenuItem
                 component={Link}
+                to="/about"
+                onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">About</Typography>
+              </MenuItem>
+              <MenuItem
+                component={Link}
                 to="/feeds"
                 onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">My Feeds</Typography>
@@ -135,8 +142,15 @@ const Header = () => {
           }}>
           Feed Me
         </Typography>
+
         {userInfo && (
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Button
+              component={Link}
+              to="/about"
+              sx={{ color: "white", borderRadius: 5, display: "block" }}>
+              About
+            </Button>
             <Button
               component={Link}
               to="/feeds"
@@ -163,6 +177,7 @@ const Header = () => {
         )}
 
         <Box sx={{ flexGrow: 0, mr: 2 }}>
+          <ThemeToggle />
           <IconButton
             size="large"
             onClick={handleOpenUserMenu}
