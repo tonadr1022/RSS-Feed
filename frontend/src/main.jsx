@@ -21,6 +21,7 @@ import FeedsPage from "./pages/FeedsPage.jsx";
 import OneFeedViewPage from "./pages/OneFeedViewPage.jsx";
 import CategoryFeedsViewPage from "./pages/CategoryFeedsViewPage.jsx";
 import CategoriesPage from "./pages/CategoriesPage.jsx";
+import ArticlePage from "./pages/ArticlePage.jsx";
 import PrivateRoute from "./components/ui/PrivateRoute.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
           element={<CategoryFeedsViewPage />}
         />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/article/:url" element={<ArticlePage />} />
       </Route>
     </Route>
   )

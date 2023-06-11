@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3500;
 import userRoutes from "./routes/userRoutes.js";
 import feedRoutes from "./routes/feedRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import articleRoutes from "./routes/articleRoutes.js";
 
 console.log(`Running on ${process.env.NODE_ENV} mode`);
 connectDB();
@@ -49,7 +50,7 @@ app.use(express.static("public"));
 app.use("/api/users", userRoutes);
 app.use("/api/feeds", feedRoutes);
 app.use("/api/categories", categoryRoutes);
-
+app.use("/api/articles", articleRoutes);
 // if production mode, set CWD, use static files from static build
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
