@@ -30,7 +30,7 @@ const createFeed = asyncHandler(async (req, res) => {
     user: req.user,
   });
   const cat = await Category.findById(category);
-  if (!cat?.feeds.includes(feed._id)) {
+  if (cat && !cat?.feeds.includes(feed._id)) {
     cat.feeds.push(feed._id);
     cat.save();
   }

@@ -117,6 +117,12 @@ const Header = () => {
                 onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">My Categories</Typography>
               </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/help"
+                onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Help</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         )}
@@ -172,6 +178,12 @@ const Header = () => {
               }}
               onClick={handleCloseNavMenu}>
               My Categories
+            </Button>
+            <Button
+              component={Link}
+              to="/help"
+              sx={{ color: "white", borderRadius: 5, display: "block" }}>
+              Help
             </Button>
           </Box>
         )}

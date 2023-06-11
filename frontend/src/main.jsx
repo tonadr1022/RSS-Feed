@@ -24,6 +24,7 @@ import CategoriesPage from "./pages/CategoriesPage.jsx";
 import ArticleViewPage from "./pages/ArticleViewPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import PrivateRoute from "./components/ui/PrivateRoute.jsx";
+import HelpPage from "./pages/HelpPage.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -41,6 +42,7 @@ const router = createBrowserRouter(
         />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/article" element={<ArticleViewPage />} />
+        <Route path="/help" element={<HelpPage />} />
       </Route>
     </Route>
   )

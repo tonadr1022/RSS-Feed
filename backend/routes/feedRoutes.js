@@ -9,14 +9,14 @@ import {
   getFeedContent,
   getOneFeedContent,
 } from "../controllers/feedsController.js";
-import { feedCreateMiddleware } from "../middleware/feedParserMiddleware.js";
+import { feedCreateFromUrl } from "../middleware/feedCreateMiddleware.js";
+
 router
   .route("/")
-  .post(protect, feedCreateMiddleware, createFeed)
+  .post(protect, feedCreateFromUrl, createFeed)
   .get(protect, getFeeds)
   .patch(protect, updateFeed)
   .delete(protect, deleteFeed);
-
 router.get("/content", protect, getFeedContent);
 router.get("/content/:id", protect, getOneFeedContent);
 router.get("/content/:categoryId", protect, getFeedContent);
