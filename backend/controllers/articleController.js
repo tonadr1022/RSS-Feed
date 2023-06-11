@@ -12,20 +12,7 @@ const getArticleText = asyncHandler(async (req, res) => {
     const paragraphText = $(element).text();
     paragraphs.push(paragraphText);
   });
-  //let str = "";
-  // console.log(paragraphs);
-  //   for (const paragraph in paragraphs) {
-  //     str.concat(" ", paragraph);
-  //   }
-  //   paragraphs.forEach((paragraph, index) => {
-  //     // console.log(paragraph);
-  //     console.log(index, paragraph);
-  //     if (paragraph) {
-  //       str += " " + paragraph;
-  //     } else {
-  //       str;
-  //     }
-  //   });
+
   return res.json({ article: paragraphs, raw: $ });
 });
 

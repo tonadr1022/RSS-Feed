@@ -1,13 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Grid, Typography, Link } from "@mui/material";
 import calcTimeSince from "../../utils/calcTimeSince";
-import { useNavigate } from "react-router-dom";
-const FeedContentItem = ({ item, type }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(`/article/${encodeURIComponent(item.link)}`);
-  };
+import { Link as RouterLink } from "react-router-dom";
+const FeedContentItem = ({ item }) => {
   const { timeSince, unit } = calcTimeSince(item.pubDate, new Date().getTime());
   return (
     <Grid item xs={12}>
@@ -16,14 +11,16 @@ const FeedContentItem = ({ item, type }) => {
           {item.title} {type === "category" ? item.feedTitle : null}
         </Typography>
       </Link> */}
-      <Link onClick={handleClick}>
-        <Typography variant="body1">
-          {item.title} {type === "category" ? item.feedTitle : null}
-        </Typography>
+      <Link component={RouterLink} to="/article" state={item}>
+        <Typography variant="body1">{item.title}</Typography>
       </Link>
-      <Typography variant="body2" display="inline-list-item">
-        &emsp;&emsp;&emsp;{item.feedTitle}&emsp;&emsp;&emsp;{timeSince} {unit}
-        ago &emsp;&emsp;&emsp; <Link href={item.link}>Source</Link>
+      <Typography
+        variant="body2"
+        display="inline-list-item"
+        sx={{ whiteSpace: "pre" }}>
+        {item?.feedTitle ? item.feedTitle + "\t\t\t" : null}
+        {timeSince ? `${timeSince} ${unit} ago` + "\t\t\t" : null}
+        <Link href={item.link}>Source</Link>
       </Typography>
     </Grid>
   );
