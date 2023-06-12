@@ -15,7 +15,6 @@ const FeedItem = ({
   handleFeedClick,
   feed,
 }) => {
-  console.log(feed, "feed");
   return (
     <Card>
       <CardContent onClick={() => handleFeedClick(feed)}>

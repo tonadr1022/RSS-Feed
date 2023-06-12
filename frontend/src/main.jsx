@@ -23,6 +23,7 @@ import CategoryFeedsViewPage from "./pages/CategoryFeedsViewPage.jsx";
 import CategoriesPage from "./pages/CategoriesPage.jsx";
 import ArticleViewPage from "./pages/ArticleViewPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
+import YouTubeVideoPage from "./pages/YouTubeVideoPage.jsx";
 import PrivateRoute from "./components/ui/PrivateRoute.jsx";
 import HelpPage from "./pages/HelpPage.jsx";
 const router = createBrowserRouter(
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
         />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/article" element={<ArticleViewPage />} />
+        <Route path="/youtube-video" element={<YouTubeVideoPage />} />
         <Route path="/help" element={<HelpPage />} />
       </Route>
     </Route>

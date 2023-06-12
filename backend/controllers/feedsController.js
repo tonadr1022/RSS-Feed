@@ -29,10 +29,12 @@ const createFeed = asyncHandler(async (req, res) => {
     isFavorite,
     user: req.user,
   });
-  const cat = await Category.findById(category);
-  if (cat && !cat?.feeds.includes(feed._id)) {
-    cat.feeds.push(feed._id);
-    cat.save();
+  if (category) {
+    const cat = await Category.findById(category);
+    if (cat && !cat?.feeds.includes(feed._id)) {
+      cat.feeds.push(feed._id);
+      cat.save();
+    }
   }
   if (feed) {
     res.status(201).json({
@@ -56,11 +58,14 @@ const createFeed = asyncHandler(async (req, res) => {
 const updateFeed = asyncHandler(async (req, res) => {
   const { _id, category, title, description, isFavorite } = req.body;
   console.log(_id);
-  const cat = await Category.findById(category);
-  if (!cat?.feeds.includes(_id)) {
-    cat.feeds.push(_id);
-    cat.save();
+  if (category) {
+    const cat = await Category.findById(category);
+    if (!cat?.feeds.includes(_id)) {
+      cat.feeds.push(_id);
+      cat.save();
+    }
   }
+
   const feed = await Feed.findOneAndUpdate(
     { _id: _id },
     {
@@ -124,6 +129,7 @@ const getFeedContent = asyncHandler(async (req, res) => {
       for (const item of feedContentRaw.items) {
         if (!item.pubDate) continue;
         const link = item?.link || item?.guid;
+
         allFeedsContent.push({
           feedTitle: feed.title,
           title: item.title,
@@ -167,6 +173,7 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
     for (const item of feedContentRaw.items) {
       if (!item.pubDate) continue;
       const link = item?.link || item?.guid;
+      console.log(item);
       feedContent.push({
         title: item.title,
         link: link,

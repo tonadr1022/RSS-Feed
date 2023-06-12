@@ -19,11 +19,10 @@ const HelpPage = () => {
         Please contact ........
       </Typography>
       <Typography variant="body1" component="p" sx={pStyle}>
-        Reddit pages: Subreddit URL
+        To add subreddits, enter the subreddit URL. To add youtube channels,
+        enter the URL of the main page of the channel.
       </Typography>
-      <Typography variant="body1" component="p" sx={pStyle}>
-        Youtube channels: Channel URL
-      </Typography>
+      <Typography variant="body1" component="p" sx={pStyle}></Typography>
     </Box>
   );
 };

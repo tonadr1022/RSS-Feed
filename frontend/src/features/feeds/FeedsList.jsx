@@ -33,18 +33,26 @@ const FeedsList = ({ handleUpdateFeed }) => {
       {isLoading ? (
         <CircularProgress />
       ) : isSuccess ? (
-        <Grid container spacing={2}>
-          {feeds.map((feed) => (
-            <Grid item key={feed.id} xs={12} sm={6} md={4}>
-              <FeedItem
-                feed={feed}
-                handleFeedClick={handleFeedClick}
-                handleDeleteFeed={handleDeleteFeed}
-                handleUpdateFeed={handleUpdateFeed}
-              />
+        <>
+          {feeds.length === 0 ? (
+            <Typography variant="h6" component="h2">
+              Add Some Feeds!
+            </Typography>
+          ) : (
+            <Grid container spacing={2}>
+              {feeds.map((feed) => (
+                <Grid item key={feed.id} xs={12} sm={6} md={4}>
+                  <FeedItem
+                    feed={feed}
+                    handleFeedClick={handleFeedClick}
+                    handleDeleteFeed={handleDeleteFeed}
+                    handleUpdateFeed={handleUpdateFeed}
+                  />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
+          )}
+        </>
       ) : isError ? (
         <Typography variant="h6" component="p">
           error: {error.status} {error.message}

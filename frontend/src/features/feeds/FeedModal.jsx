@@ -17,6 +17,7 @@ import { useAddFeedMutation, useUpdateFeedMutation } from "./feedsApiSlice";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { Cancel } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const style = {
   display: "flex",
@@ -44,21 +45,20 @@ const FeedModal = ({
   const [updateFeed, { isLoading: patchIsLoading }] = useUpdateFeedMutation();
 
   const { register, handleSubmit } = useForm();
-
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       let response;
       if (feed) {
         data = { ...data, _id: feed._id };
+
         delete data.url;
+        if (data.category === "") delete data.category;
         response = await updateFeed(data).unwrap();
         handleModalClose();
       } else {
         response = await addFeed(data).unwrap();
         handleModalClose();
       }
-      console.log(response);
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message);
@@ -152,19 +152,31 @@ const FeedModal = ({
             />
           </Grid>
           <Grid item xs={12}>
-            <InputLabel id="category-label">Category</InputLabel>
-            <Select
-              labelId="category-label"
-              sx={{ width: "50%" }}
-              required
-              defaultValue={feed?.category?._id || ""}
-              {...register("category")}>
-              {categories.map((category, i) => (
-                <MenuItem key={i} value={category._id}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
+            {categories.length === 0 ? (
+              <Button
+                component={Link}
+                to="/categories"
+                variant="contained"
+                sx={{ width: "50%" }}>
+                Add A Category To Associate!
+              </Button>
+            ) : (
+              <>
+                <InputLabel id="category-label">Category</InputLabel>
+
+                <Select
+                  labelId="category-label"
+                  sx={{ width: "50%" }}
+                  defaultValue={feed?.category?._id || ""}
+                  {...register("category")}>
+                  {categories.map((category, i) => (
+                    <MenuItem key={i} value={category._id}>
+                      {category.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Button type="submit" sx={{ width: "30%" }} variant="contained">

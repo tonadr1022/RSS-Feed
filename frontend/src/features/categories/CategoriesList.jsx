@@ -41,17 +41,25 @@ const CategoriesList = () => {
       {isLoading ? (
         <CircularProgress />
       ) : isSuccess ? (
-        <Grid container spacing={2}>
-          {categories.map((category, i) => (
-            <Grid item key={i} xs={6} sm={4}>
-              <CategoryCard
-                handleClick={handleClick}
-                category={category}
-                handleDelete={handleDelete}
-              />
+        <>
+          {categories.length === 0 ? (
+            <Typography variant="h5" component="h2">
+              Add Some Categories!
+            </Typography>
+          ) : (
+            <Grid container spacing={2}>
+              {categories.map((category, i) => (
+                <Grid item key={i} xs={6} sm={4}>
+                  <CategoryCard
+                    handleClick={handleClick}
+                    category={category}
+                    handleDelete={handleDelete}
+                  />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
+          )}
+        </>
       ) : isError ? (
         <Typography variant="h6" component="p">
           Error: {error.status} {error.message}

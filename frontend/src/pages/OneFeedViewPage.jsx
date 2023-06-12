@@ -13,6 +13,7 @@ const OneFeedViewPage = () => {
     error,
   } = useGetFeedContentsQuery(feedId);
   const title = feedContent && Object.keys(feedContent)[0];
+  console.log(feedContent);
   return (
     <>
       {isLoading ? (

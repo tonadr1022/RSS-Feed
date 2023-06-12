@@ -1,7 +1,7 @@
 import React from "react";
 import { useGetArticleQuery } from "../features/articles/articlesApiSlice";
 import { CircularProgress, Typography, Box, Link } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import calcTimeSince from "../utils/calcTimeSince";
 import { Link as RouterLink } from "react-router-dom";
 const ArticleViewPage = () => {
