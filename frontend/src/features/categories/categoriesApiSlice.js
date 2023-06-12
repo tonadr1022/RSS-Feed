@@ -40,20 +40,14 @@ export const categoriesApiSlice = apiSlice.injectEndpoints({
         url: `${CATEGORIES_URL}`,
         method: "PATCH",
         body: data,
-        validateStatus: (response, result) => {
-          return response.status < 300 && !result.isError;
-        },
       }),
       invalidatesTags: ["Category"],
     }),
     deleteCategory: builder.mutation({
-      query: (data) => ({
+      query: (id) => ({
         url: `${CATEGORIES_URL}`,
         method: "DELETE",
-        body: data,
-        validateStatus: (response, result) => {
-          return response.status < 300 && !result.isError;
-        },
+        body: id,
       }),
       invalidatesTags: ["Category"],
     }),

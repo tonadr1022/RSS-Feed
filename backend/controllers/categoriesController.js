@@ -8,7 +8,6 @@ const getCategories = asyncHandler(async (req, res) => {
   const categories = await Category.find({ user: req.user })
     .populate("feeds")
     .exec();
-  console.log(categories);
   res.status(200).json(categories);
 });
 
@@ -51,7 +50,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @access Private
 const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  console.log(id, req.body);
+  console.log(id, "id");
   if (!id) {
     return res.status(400).json({ message: "Category id required" });
   }

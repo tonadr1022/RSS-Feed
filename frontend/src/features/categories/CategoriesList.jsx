@@ -1,7 +1,11 @@
 import { Grid, Typography, CircularProgress } from "@mui/material";
 import CategoryCard from "./CategoryCard";
-import { useGetCategoriesQuery } from "./categoriesApiSlice";
+import {
+  useGetCategoriesQuery,
+  useDeleteCategoryMutation,
+} from "./categoriesApiSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CategoriesList = () => {
   const navigate = useNavigate();
@@ -12,6 +16,7 @@ const CategoriesList = () => {
     isSuccess,
     error,
   } = useGetCategoriesQuery();
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   const handleClick = (item) => {
     if (item?.url) {
@@ -23,6 +28,14 @@ const CategoriesList = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await deleteCategory({ id: id }).unwrap();
+    } catch (err) {
+      toast.error(err?.data?.message);
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -31,7 +44,11 @@ const CategoriesList = () => {
         <Grid container spacing={2}>
           {categories.map((category, i) => (
             <Grid item key={i} xs={6} sm={4}>
-              <CategoryCard handleClick={handleClick} category={category} />
+              <CategoryCard
+                handleClick={handleClick}
+                category={category}
+                handleDelete={handleDelete}
+              />
             </Grid>
           ))}
         </Grid>

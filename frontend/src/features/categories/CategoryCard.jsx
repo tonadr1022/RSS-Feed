@@ -6,9 +6,10 @@ import {
   Typography,
   Link,
 } from "@mui/material";
+import { useDeleteCategoryMutation } from "./categoriesApiSlice";
 
 /* eslint-disable react/prop-types */
-const CategoryCard = ({ category, handleClick }) => {
+const CategoryCard = ({ category, handleClick, handleDelete }) => {
   return (
     <Card>
       <CardContent>
@@ -29,7 +30,7 @@ const CategoryCard = ({ category, handleClick }) => {
           : null}
       </CardContent>
       <CardActions>
-        <Button>Delete</Button>
+        <Button onClick={() => handleDelete(category._id)}>Delete</Button>
       </CardActions>
     </Card>
   );

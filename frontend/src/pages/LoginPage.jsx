@@ -40,7 +40,7 @@ const LoginPage = () => {
       dispatch(setCredentials({ ...response }));
       navigate("/");
     } catch (err) {
-      toast.error(err.data.message);
+      toast.error(err?.data?.message);
     }
   };
 
