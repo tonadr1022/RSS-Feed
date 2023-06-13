@@ -7,7 +7,6 @@ import {
   Link,
   Grid,
 } from "@mui/material";
-import { useDeleteCategoryMutation } from "./categoriesApiSlice";
 
 /* eslint-disable react/prop-types */
 const CategoryCard = ({ category, handleClick, handleDelete }) => {

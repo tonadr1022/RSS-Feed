@@ -24,7 +24,7 @@ const CategoryFeedsViewPage = () => {
         {title}
       </Typography>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ margin: "auto", marginTop: 10 }} />
       ) : isSuccess ? (
         <FeedContentList type={"category"} feedContent={feedContent[title]} />
       ) : isError ? (

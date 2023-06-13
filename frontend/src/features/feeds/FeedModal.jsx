@@ -94,13 +94,6 @@ const FeedModal = ({
               </Typography>
             )}
           </Grid>
-          <Grid item xs={12}>
-            {feed?.url && (
-              <Typography textAlign="center" variant="body2">
-                URL: {feed.url}
-              </Typography>
-            )}
-          </Grid>
           {!feed && (
             <Grid item xs={12}>
               <TextField

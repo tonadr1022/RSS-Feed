@@ -133,7 +133,6 @@ const getFeedContent = asyncHandler(async (req, res) => {
         for (const item of feed.items) {
           if (!item.pubDate) continue;
           const link = item?.link || item?.guid;
-          console.log("here");
           allFeedsContent.push({
             feedTitle: feed.title,
             title: item.title,
@@ -155,7 +154,6 @@ const getFeedContent = asyncHandler(async (req, res) => {
     res.status(500);
     throw new Error("Failed getting content");
   }
-  console.log("all feeds", allFeedsContent);
   const sortedContent = sortFeedContent(allFeedsContent);
   if (category) {
     res.status(200).json({ [category.name]: sortedContent });
