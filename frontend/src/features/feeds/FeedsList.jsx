@@ -31,7 +31,7 @@ const FeedsList = ({ handleUpdateFeed }) => {
   return (
     <>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ marginTop: 10 }} />
       ) : isSuccess ? (
         <>
           {feeds.length === 0 ? (

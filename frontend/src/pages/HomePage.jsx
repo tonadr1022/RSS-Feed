@@ -17,7 +17,7 @@ const FavoritesFeedContent = () => {
   return (
     <>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ marginTop: 10 }} />
       ) : isSuccess && feedContent.feedTitles.length > 0 ? (
         <FeedContentList feedContent={feedContent} />
       ) : isError ? (

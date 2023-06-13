@@ -1,5 +1,5 @@
 // import { AppBar, Toolbar, Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   AppBar,
   Box,
@@ -18,6 +18,8 @@ import { useLogoutMutation } from "../../features/users/usersApiSlice";
 import { clearCredentials } from "../../app/api/authSlice.js";
 import { apiSlice } from "../../app/api/apiSlice";
 import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "@emotion/react";
+import { ColorModeContext } from "../../App";
 // Header adapted from MUI Example
 const Header = () => {
   const dispatch = useDispatch();
@@ -54,6 +56,13 @@ const Header = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
+
+  const handleToggle = () => {
+    colorMode.toggleColorMode();
   };
 
   return (
@@ -101,21 +110,27 @@ const Header = () => {
               sx={{ display: { xs: "block", md: "none" } }}>
               <MenuItem
                 component={Link}
-                to="/about"
-                onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">About</Typography>
-              </MenuItem>
-              <MenuItem
-                component={Link}
                 to="/feeds"
                 onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">My Feeds</Typography>
+                <Typography textAlign="center">Feeds</Typography>
               </MenuItem>
               <MenuItem
                 component={Link}
                 to="/categories"
                 onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">My Categories</Typography>
+                <Typography textAlign="center">Categories</Typography>
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/find-feeds"
+                onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">Find Feeds</Typography>
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                to="/about"
+                onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">About</Typography>
               </MenuItem>
               <MenuItem
                 component={Link}
@@ -153,12 +168,6 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               component={Link}
-              to="/about"
-              sx={{ color: "white", borderRadius: 5, display: "block" }}>
-              About
-            </Button>
-            <Button
-              component={Link}
               to="/feeds"
               sx={{
                 color: "white",
@@ -166,7 +175,7 @@ const Header = () => {
                 display: "block",
               }}
               onClick={handleCloseNavMenu}>
-              My Feeds
+              Feeds
             </Button>
             <Button
               component={Link}
@@ -177,19 +186,41 @@ const Header = () => {
                 display: "block",
               }}
               onClick={handleCloseNavMenu}>
-              My Categories
+              Categories
+            </Button>
+            <Button
+              component={Link}
+              to="/find-feeds"
+              sx={{
+                color: "white",
+                borderRadius: 5,
+                textAlign: "center",
+                display: "block",
+              }}>
+              Find Feeds
+            </Button>
+            <Button
+              component={Link}
+              to="/about"
+              sx={{ color: "white", borderRadius: 5, display: "block" }}>
+              About
             </Button>
             <Button
               component={Link}
               to="/help"
-              sx={{ color: "white", borderRadius: 5, display: "block" }}>
+              sx={{
+                color: "white",
+                borderRadius: 5,
+                textAlign: "center",
+                display: "block",
+              }}>
               Help
             </Button>
           </Box>
         )}
 
         <Box sx={{ flexGrow: 0, mr: 2 }}>
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
           <IconButton
             size="large"
             onClick={handleOpenUserMenu}
@@ -213,6 +244,13 @@ const Header = () => {
                     color="inherit"
                     onClick={handleCloseUserMenu}>
                     <Typography>Profile</Typography>
+                  </MenuItem>,
+                  <MenuItem key={"darkMode"} onClick={handleToggle}>
+                    <Typography>
+                      {theme.palette.mode === "light"
+                        ? "Switch to Dark Mode"
+                        : "Switch to Light Mode"}
+                    </Typography>
                   </MenuItem>,
                   <MenuItem
                     key={"logout"}

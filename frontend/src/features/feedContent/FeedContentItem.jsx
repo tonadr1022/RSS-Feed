@@ -24,7 +24,9 @@ const FeedContentItem = ({ item }) => {
         sx={{ whiteSpace: "pre" }}>
         {item?.feedTitle ? item.feedTitle + "\t\t\t" : null}
         {timeSince ? `${timeSince} ${unit} ago` + "\t\t\t" : null}
-        <Link href={item.link}>Source</Link>
+        <Link target="_blank" href={item.link}>
+          Source
+        </Link>
       </Typography>
     </Grid>
   );

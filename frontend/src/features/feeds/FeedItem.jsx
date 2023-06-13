@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useTheme } from "@emotion/react";
 import { Star } from "@mui/icons-material";
 import {
   Typography,
@@ -6,7 +7,6 @@ import {
   Card,
   CardContent,
   CardActions,
-  Box,
   Grid,
 } from "@mui/material";
 const FeedItem = ({
@@ -15,9 +15,19 @@ const FeedItem = ({
   handleFeedClick,
   feed,
 }) => {
+  const theme = useTheme();
   return (
-    <Card>
-      <CardContent onClick={() => handleFeedClick(feed)}>
+    <Card
+      sx={{
+        ":hover": {
+          boxShadow: theme.shadows[24],
+        },
+      }}>
+      <CardContent
+        sx={{
+          cursor: "pointer",
+        }}
+        onClick={() => handleFeedClick(feed)}>
         <Grid container>
           <Grid item xs={11}>
             <Typography variant="h4" component={"h2"}>

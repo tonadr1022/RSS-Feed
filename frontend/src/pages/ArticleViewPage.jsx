@@ -42,7 +42,9 @@ const ArticleViewPage = () => {
         </Typography>
       </Box>
       {isLoading ? (
-        <CircularProgress />
+        <div style={{ textAlign: "center" }}>
+          <CircularProgress sx={{ marginTop: 10 }} />
+        </div>
       ) : isSuccess ? (
         data.article.map((paragraph, i) => (
           <Typography key={i} variant="body2" sx={{ margin: 2 }}>

@@ -9,17 +9,24 @@ const feedCreateFromUrl = async (req, res, next) => {
     if (!url) {
       res.status(400).json({ message: "Must provide a url" });
     }
-    const user = req.body.user;
+    const user = req.user;
+
     if (url.includes("reddit")) {
       url += url.endsWith("/") ? ".rss" : "/.rss";
       req.body.url = url;
     }
+
     // check if feed exists already
-    const feedExists = await Feed.findOne({ url, user });
-    if (feedExists) {
+    const feedExists = await Feed.find({
+      url: url,
+      user: req.user,
+    }).exec();
+
+    if (feedExists.length > 0) {
       res.status(409);
-      next(new Error("Duplicate feed url"));
+      next(new Error("Duplicate Feed"));
     }
+
     let feed;
     // If youtube url, get the rss feed link from main channel page.
     if (url.includes("youtube")) {

@@ -19,7 +19,6 @@ const getFeeds = asyncHandler(async (req, res) => {
 // @access Private
 const createFeed = asyncHandler(async (req, res) => {
   const { url, baseLink, title, category, description, isFavorite } = req.body;
-
   const feed = await Feed.create({
     url,
     baseLink,
@@ -46,6 +45,7 @@ const createFeed = asyncHandler(async (req, res) => {
       baseLink: baseLink,
       isFavorite: isFavorite,
     });
+    console.log("feed", feed);
   } else {
     res.status(400);
     throw new Error("invalid user data");
@@ -122,43 +122,47 @@ const getFeedContent = asyncHandler(async (req, res) => {
   }
   const allFeedsContent = [];
   const feedTitles = [];
-  for (const feed of feeds) {
-    feedTitles.push(feed.title);
-    try {
-      const feedContentRaw = await parser.parseURL(feed.url);
-      for (const item of feedContentRaw.items) {
-        if (!item.pubDate) continue;
-        const link = item?.link || item?.guid;
-
-        allFeedsContent.push({
-          feedTitle: feed.title,
-          title: item.title,
-          link: link,
-          pubDate: item.pubDate,
-          isoDate: item.isoDate,
-        });
+  try {
+    const cont = await Promise.all(
+      feeds.map(async (feed) => {
+        feedTitles.push(feed.title);
+        return await parser.parseURL(feed.url);
+      })
+    ).then((res) => {
+      for (const feed of res) {
+        for (const item of feed.items) {
+          if (!item.pubDate) continue;
+          const link = item?.link || item?.guid;
+          console.log("here");
+          allFeedsContent.push({
+            feedTitle: feed.title,
+            title: item.title,
+            link: link,
+            pubDate: item.pubDate,
+            isoDate: item.isoDate,
+          });
+        }
       }
-      // const feedContentObj = {
-      //   id: feed._id,
-      //   title: feed.title,
-      //   content: feedContent,
-      // };
-
-      //   allFeedsContent.push(feedContentObj);
-    } catch (err) {
-      console.log(err);
-      res.status(500);
-      throw new Error("Failed getting content");
-    }
+    });
+    // const feedContentObj = {
+    //   id: feed._id,
+    //   title: feed.title,
+    //   content: feedContent,
+    // };
+    //   allFeedsContent.push(feedContentObj);
+  } catch (err) {
+    console.log(err);
+    res.status(500);
+    throw new Error("Failed getting content");
   }
+  console.log("all feeds", allFeedsContent);
   const sortedContent = sortFeedContent(allFeedsContent);
-
   if (category) {
     res.status(200).json({ [category.name]: sortedContent });
   } else {
     res
       .status(200)
-      .json({ feedTitles: feedTitles, sortedContent: sortedContent });
+      .json({ feedTitles: feedTitles, sortedContent: allFeedsContent });
   }
 });
 

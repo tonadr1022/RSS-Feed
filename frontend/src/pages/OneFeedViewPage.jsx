@@ -15,27 +15,27 @@ const OneFeedViewPage = () => {
   const title = feedContent && Object.keys(feedContent)[0];
   console.log(feedContent);
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ marginTop: 20 }} />
       ) : isSuccess ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}>
+        <>
           <Typography variant="h2" component="h1">
             {title}
           </Typography>
           <FeedContentList feedContent={feedContent[title]} />
-        </Box>
+        </>
       ) : isError ? (
         <Typography variant="h6" component="p">
           Error: {error.status} {error.message}
         </Typography>
       ) : null}
-    </>
+    </Box>
   );
 };
 

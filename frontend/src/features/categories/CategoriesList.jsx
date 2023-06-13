@@ -39,7 +39,7 @@ const CategoriesList = () => {
   return (
     <>
       {isLoading ? (
-        <CircularProgress />
+        <CircularProgress sx={{ marginTop: 10 }} />
       ) : isSuccess ? (
         <>
           {categories.length === 0 ? (
