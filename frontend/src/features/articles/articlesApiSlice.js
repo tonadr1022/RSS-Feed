@@ -13,7 +13,17 @@ export const articlesApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getSummary: builder.mutation({
+      query: (data) => ({
+        url: `${ARTICLES_URL}/summarize`,
+        method: "POST",
+        body: data,
+        validateStatus: (response, result) => {
+          return response.status <= 300 && !result.isError;
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetArticleQuery } = articlesApiSlice;
+export const { useGetArticleQuery, useGetSummaryMutation } = articlesApiSlice;

@@ -1,18 +1,27 @@
 import asyncHandler from "express-async-handler";
-import * as cheerio from "cheerio";
+import fetchText from "../utils/fetchText.js";
+import { summarize } from "../utils/summarize.js";
+//import fs from "fs";
 
 const getArticleText = asyncHandler(async (req, res) => {
   const url = req.body.url;
-  const response = await fetch(url);
-  const html = await response.text();
-  const $ = cheerio.load(html);
-  const paragraphs = [];
-  $("p").each((index, element) => {
-    const paragraphText = $(element).text();
-    paragraphs.push(paragraphText);
-  });
-
-  return res.json({ article: paragraphs, raw: $ });
+  const { paragraphs, pString } = await fetchText(url);
+  return res.json({ article: paragraphs, pString: pString });
 });
 
-export { getArticleText };
+const summarizeArticleContent = asyncHandler(async (req, res) => {
+  const url = req.body.url;
+  const pString = req.body.pString;
+  //  const paragraphs = await fetchText(url);
+  //  let p2s = "";
+  //  for (const paragraph of paragraphs) {
+  //    p2s += paragraph;
+  //  }
+  const summarized = await summarize(pString);
+  return res.json({ summary: summarized });
+  // console.log("p2s", p2s);
+  //  console.log("pstring", pString);
+  return res.json({ summary: pString });
+});
+
+export { getArticleText, summarizeArticleContent };
