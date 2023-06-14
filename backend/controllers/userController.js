@@ -7,7 +7,6 @@ import User from "../models/User.js";
 // route POST /api/users/auth
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { username, password } = req.body;
   // find user based on username
   const user = await User.findOne({ username });

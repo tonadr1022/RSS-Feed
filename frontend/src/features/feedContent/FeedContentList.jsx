@@ -5,7 +5,6 @@ const FeedContentList = ({ feedContent, type }) => {
   const articles = feedContent?.sortedContent
     ? feedContent.sortedContent
     : feedContent;
-  console.log(articles, "args");
   return (
     <Grid container padding={2}>
       {articles.map((item, index) => (

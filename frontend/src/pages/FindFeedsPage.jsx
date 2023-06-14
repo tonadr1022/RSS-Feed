@@ -47,6 +47,7 @@ const FindFeedsPage = () => {
   const [siteName, setSiteName] = useState("");
   const [topic, setTopic] = useState("");
   const [tableData, setTableData] = useState(data);
+  const [numRows, setNumRows] = useState(50);
   const [
     addFeed,
     { isLoading: addIsLoading, isSuccess: addIsSuccess, isError: addIsError },
@@ -72,12 +73,10 @@ const FindFeedsPage = () => {
   const handleAdd = async (feed) => {
     try {
       const response = await addFeed({ url: feed.rssUrl }).unwrap();
-      console.log(response);
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message);
     }
-    console.log(feed);
   };
 
   return (
@@ -122,8 +121,15 @@ const FindFeedsPage = () => {
             <CircularProgress />
           </Grid>
         ) : null}
-        <Grid item xs={12} sx={{ justifySelf: "center" }}>
-          <FeedsTable tableData={tableData} handleAdd={handleAdd} />
+        <Grid item xs={12}>
+          <FeedsTable
+            numRows={numRows}
+            tableData={tableData}
+            handleAdd={handleAdd}
+          />
+        </Grid>
+        <Grid item xs={12} sx={{ textAlign: "center" }}>
+          <Button onClick={() => setNumRows(numRows + 50)}>Load More</Button>
         </Grid>
       </Grid>
     </Box>

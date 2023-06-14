@@ -42,7 +42,6 @@ const CategoryModal = ({ setModalIsOpen }) => {
     e.preventDefault();
     try {
       const response = await addCategory({ name: name }).unwrap();
-      console.log(response);
       setModalIsOpen(false);
     } catch (err) {
       console.log(err);

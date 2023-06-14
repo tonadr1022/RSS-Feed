@@ -45,7 +45,6 @@ const createFeed = asyncHandler(async (req, res) => {
       baseLink: baseLink,
       isFavorite: isFavorite,
     });
-    console.log("feed", feed);
   } else {
     res.status(400);
     throw new Error("invalid user data");
@@ -57,7 +56,6 @@ const createFeed = asyncHandler(async (req, res) => {
 // @access Private
 const updateFeed = asyncHandler(async (req, res) => {
   const { _id, category, title, description, isFavorite } = req.body;
-  console.log(_id);
   if (category) {
     const cat = await Category.findById(category);
     if (!cat?.feeds.includes(_id)) {
@@ -88,7 +86,7 @@ const updateFeed = asyncHandler(async (req, res) => {
 // @access Private
 const deleteFeed = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  console.log(id, req.body);
+
   if (!id) {
     return res.status(400).json({ message: "Feed ID required" });
   }
@@ -175,7 +173,6 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
     for (const item of feedContentRaw.items) {
       if (!item.pubDate) continue;
       const link = item?.link || item?.guid;
-      console.log(item);
       feedContent.push({
         title: item.title,
         link: link,

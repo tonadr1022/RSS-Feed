@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import React from "react";
-
+import { Link as BrowserLink } from "react-router-dom";
 const pStyle = {
   fontSize: 20,
   textAlign: "center",
@@ -15,16 +15,36 @@ const AboutPage = () => {
         About
       </Typography>
       <Typography variant="body1" component="p" sx={pStyle}>
-        Welcome to Feed Me! This is an RSS feed reader in development
+        Welcome to Feed Me! An RSS feed reader to simplify your internet.
+        consumption
       </Typography>
       <Typography variant="body1" component="p" sx={pStyle}>
         Create categories to divide feed groups, and select favorites to view on
         the home page.
       </Typography>
       <Typography variant="body1" component="p" sx={pStyle}>
-        Most news sources have RSS feeds, and you can (eventually, not yet)
-        enter a YouTube channel name or subreddit name to fetch the feed.
-        Support for other platforms may come soon.
+        Go to{" "}
+        {
+          <Link component={BrowserLink} to="/find-feeds">
+            Find Feeds
+          </Link>
+        }{" "}
+        to browse news sites.
+      </Typography>
+      <Typography variant="body1" component="p" sx={pStyle}>
+        To save a youtube channel or subreddit as an rss feed, add the main url
+        of the subreddit or channel.
+      </Typography>
+      <Typography variant="body1" component="p" sx={pStyle}>
+        Check out the{" "}
+        {
+          <Link
+            component={BrowserLink}
+            to="https://github.com/tonadr1022/RSS-Feed">
+            GitHub Repo
+          </Link>
+        }{" "}
+        for this site to view the source code.
       </Typography>
     </Box>
   );

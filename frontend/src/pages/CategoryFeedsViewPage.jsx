@@ -5,7 +5,6 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 
 const CategoryFeedsViewPage = () => {
   const { categoryId: id } = useParams();
-  console.log("categoryId", id);
   const {
     data: feedContent,
     isLoading,
@@ -15,9 +14,6 @@ const CategoryFeedsViewPage = () => {
   } = useGetCategoryFeedContentsQuery(id);
 
   const title = feedContent && Object.keys(feedContent)[0];
-  if (feedContent) {
-    console.log(feedContent[title]);
-  }
   return (
     <Box component="main" sx={{ display: "flex", flexDirection: "column" }}>
       <Typography variant="h2" component="h1" align="center">

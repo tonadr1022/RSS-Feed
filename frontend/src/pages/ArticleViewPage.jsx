@@ -6,7 +6,6 @@ import calcTimeSince from "../utils/calcTimeSince";
 import { Link as RouterLink } from "react-router-dom";
 const ArticleViewPage = () => {
   const { isoDate, link: sourceUrl, title } = useLocation().state;
-  console.log(sourceUrl);
   const timeNow = new Date();
   const datePub = new Date(isoDate).toLocaleDateString();
   const timePub = new Date(isoDate).toLocaleTimeString();
@@ -15,7 +14,6 @@ const ArticleViewPage = () => {
   const { data, isLoading, isSuccess, isError, error } = useGetArticleQuery({
     url: sourceUrl,
   });
-  if (isSuccess) console.log("raw", data);
   return (
     <>
       <Box

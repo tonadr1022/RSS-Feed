@@ -13,7 +13,6 @@ const FavoritesFeedContent = () => {
     isError,
     error,
   } = useGetAllFeedContentsQuery();
-  console.log(feedContent);
   return (
     <>
       {isLoading ? (

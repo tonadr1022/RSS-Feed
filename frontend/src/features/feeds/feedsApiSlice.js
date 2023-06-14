@@ -15,7 +15,6 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
       },
       keepUnusedDataFor: 60,
       transformResponse: (responseData) => {
-        // console.log("res data", responseData);
         const loadedFeeds = responseData.map((feed) => {
           feed.id = feed._id;
           return feed;
@@ -35,7 +34,7 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Feed"],
+      invalidatesTags: ["Feed", "Categories"],
     }),
     deleteFeed: builder.mutation({
       query: (data) => ({
@@ -43,7 +42,7 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
         body: data,
       }),
-      invalidatesTags: ["Feed"],
+      invalidatesTags: ["Feed", "Categories"],
     }),
     updateFeed: builder.mutation({
       query: (data) => ({
@@ -51,7 +50,7 @@ export const feedsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Feed"],
+      invalidatesTags: ["Feed", "Categories"],
     }),
   }),
 });

@@ -18,7 +18,6 @@ const createCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
 
   const category = await Category.create({ name, user: req.user });
-  console.log(category);
 
   if (category) {
     res.status(201).json({ _id: category._id, name: category.name });
@@ -50,7 +49,6 @@ const updateCategory = asyncHandler(async (req, res) => {
 // @access Private
 const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.body;
-  console.log(id, "id");
   if (!id) {
     return res.status(400).json({ message: "Category id required" });
   }

@@ -19,11 +19,11 @@ import {
   IconButton,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-const FeedsTable = ({ tableData, handleAdd }) => {
+const FeedsTable = ({ tableData, handleAdd, numRows }) => {
   return (
     <TableContainer
       component={Paper}
-      sx={{ maxWidth: "900px", marginLeft: "auto", marginRight: "auto" }}>
+      sx={{ maxWidth: "500px", marginLeft: "auto", marginRight: "auto" }}>
       <Table>
         <TableHead>
           <TableRow>
@@ -35,11 +35,15 @@ const FeedsTable = ({ tableData, handleAdd }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableData.slice(0, 50).map((row, i) => (
+          {tableData.slice(0, numRows).map((row, i) => (
             <TableRow key={i}>
-              <TableCell align="center">{row.cleanUrl}</TableCell>
-              <TableCell align="center">{row.topic}</TableCell>
-              <TableCell sx={{ padding: 0 }} align="center">
+              <TableCell align="center" sx={{ width: 10 }}>
+                {row.cleanUrl}
+              </TableCell>
+              <TableCell align="center" sx={{ width: 10 }}>
+                {row.topic}
+              </TableCell>
+              <TableCell sx={{ padding: 0, width: 3 }} align="center">
                 <IconButton onClick={() => handleAdd(row)}>
                   <AddCircleOutlineIcon />
                 </IconButton>

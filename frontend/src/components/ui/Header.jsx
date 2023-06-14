@@ -50,7 +50,6 @@ const Header = () => {
       setAnchorElUser(null);
       const response = await logout().unwrap(); // server logout
       dispatch(apiSlice.util.resetApiState());
-      console.log(response);
       dispatch(clearCredentials()); // handle auth slice (local storage)
       navigate("/");
     } catch (err) {
