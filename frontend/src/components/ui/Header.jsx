@@ -65,7 +65,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar component="header" position="static">
+    <AppBar component="header" position="sticky">
       <Toolbar component="nav" disableGutters>
         <IconButton component={Link} to="/" sx={{ p: 0 }} color="inherit">
           <LunchDining

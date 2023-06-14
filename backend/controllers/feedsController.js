@@ -171,13 +171,17 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
     const feedContentRaw = await parser.parseURL(feed.url);
     const feedContent = [];
     for (const item of feedContentRaw.items) {
-      if (!item.pubDate) continue;
+      //  if (!item.pubDate) continue;
       const link = item?.link || item?.guid;
+      let title = item.title;
+      if (link.includes("video")) {
+        title = item.title ? `Video: ${item.title}` : "Video";
+      }
       feedContent.push({
-        title: item.title,
+        title: title,
         link: link,
-        pubDate: item.pubDate,
-        isoDate: item.isoDate,
+        pubDate: item?.pubDate,
+        isoDate: item?.isoDate,
       });
 
       // // save article to db for collection

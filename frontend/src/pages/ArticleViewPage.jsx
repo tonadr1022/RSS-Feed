@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetArticleQuery,
   useGetSummaryMutation,
@@ -9,6 +9,8 @@ import calcTimeSince from "../utils/calcTimeSince";
 import { Link as RouterLink } from "react-router-dom";
 import Summary from "../features/articles/Summary";
 import { toast } from "react-toastify";
+import ErrorText from "../components/ui/ErrorText";
+
 const ArticleViewPage = () => {
   const { isoDate, link: sourceUrl, title } = useLocation().state;
   const [getSummary, { isLoading: sumIsLoading }] = useGetSummaryMutation();
@@ -20,7 +22,7 @@ const ArticleViewPage = () => {
   const { data, isLoading, isSuccess, isError, error } = useGetArticleQuery({
     url: sourceUrl,
   });
-
+  console.log(data);
   const handleSummarize = async () => {
     try {
       const summaryInputData = { url: sourceUrl, pString: data?.pString };
@@ -91,9 +93,7 @@ const ArticleViewPage = () => {
           ))}
         </>
       ) : isError ? (
-        <Typography variant="h6" component="p">
-          Error: {error.status} {error.message}
-        </Typography>
+        <ErrorText error={error} />
       ) : null}
     </>
   );
