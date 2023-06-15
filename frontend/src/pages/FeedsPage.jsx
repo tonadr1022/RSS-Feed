@@ -1,23 +1,31 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, Button } from "@mui/material";
 import FeedsList from "../features/feeds/FeedsList";
 import { useState } from "react";
 import FeedModal from "../features/feeds/FeedModal";
 import { useGetCategoriesQuery } from "../features/categories/categoriesApiSlice";
 import { AddCircleOutline } from "@mui/icons-material";
+import MultipleAddModal from "../features/feeds/MultipleAddModal";
 const FeedsPage = () => {
   const { data: categories } = useGetCategoriesQuery();
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [feedModalOpen, setFeedModalOpen] = useState(false);
+  const [multipleAddModalOpen, setMultipleAddModalOpen] = useState(false);
   const [selectedFeed, setSelectedFeed] = useState(null);
+  const [modalType, setModalType] = useState("");
 
   const handleUpdateFeed = (selectedFeed) => {
     setSelectedFeed(selectedFeed);
-    setModalIsOpen(true);
+    setFeedModalOpen(true);
   };
 
   const handleModalClose = () => {
     setSelectedFeed(null);
-    setModalIsOpen(false);
+    setFeedModalOpen(false);
+  };
+
+  const handleMultipleAddModalOpen = (type) => {
+    setModalType(type);
+    setMultipleAddModalOpen(true);
   };
 
   return (
@@ -34,19 +42,32 @@ const FeedsPage = () => {
       <IconButton
         variant="contained"
         sx={{ marginBottom: 2, marginTop: 2 }}
-        onClick={() => setModalIsOpen(true)}>
+        onClick={() => setFeedModalOpen(true)}>
         <AddCircleOutline fontSize="large" />
       </IconButton>
+      <Button onClick={() => handleMultipleAddModalOpen("Reddit")}>
+        Add Reddit
+      </Button>
+      <Button onClick={() => handleMultipleAddModalOpen("YouTube")}>
+        Add Youtube
+      </Button>
       <FeedsList
         handleUpdateFeed={handleUpdateFeed}
-        setModalIsOpen={setModalIsOpen}
+        setModalIsOpen={setFeedModalOpen}
       />
-      {modalIsOpen && (
+      {multipleAddModalOpen && (
+        <MultipleAddModal
+          modalType={modalType}
+          categories={categories}
+          setMultipleAddModalOpen={setMultipleAddModalOpen}
+        />
+      )}
+      {feedModalOpen && (
         <FeedModal
           feed={selectedFeed}
           categories={categories}
           handleModalClose={handleModalClose}
-          setModalIsOpen={setModalIsOpen}
+          setModalIsOpen={setFeedModalOpen}
           setSelectedFeed={setSelectedFeed}
         />
       )}

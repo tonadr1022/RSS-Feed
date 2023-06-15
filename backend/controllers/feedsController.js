@@ -3,7 +3,6 @@ import Feed from "../models/Feed.js";
 import Parser from "rss-parser";
 import Category from "../models/Category.js";
 import sortFeedContent from "../utils/sortFeedContent.js";
-import Article from "../models/Article.js";
 const parser = new Parser();
 
 // @desc Get All feeds
@@ -18,7 +17,8 @@ const getFeeds = asyncHandler(async (req, res) => {
 // route POST /api/feeds
 // @access Private
 const createFeed = asyncHandler(async (req, res) => {
-  const { url, baseLink, title, category, description, isFavorite } = req.body;
+  let { url, baseLink, title, category, description, isFavorite } = req.body;
+  if (category === "") category = null;
   const feed = await Feed.create({
     url,
     baseLink,
@@ -141,12 +141,6 @@ const getFeedContent = asyncHandler(async (req, res) => {
         }
       }
     });
-    // const feedContentObj = {
-    //   id: feed._id,
-    //   title: feed.title,
-    //   content: feedContent,
-    // };
-    //   allFeedsContent.push(feedContentObj);
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -165,8 +159,6 @@ const getFeedContent = asyncHandler(async (req, res) => {
 const getOneFeedContent = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const feed = await Feed.findById(id);
-  // const userFullName = req.user.firstName + " " + req.user.lastName;
-  // const userUsername = req.user.username;
   if (feed) {
     const feedContentRaw = await parser.parseURL(feed.url);
     const feedContent = [];
@@ -183,19 +175,6 @@ const getOneFeedContent = asyncHandler(async (req, res) => {
         pubDate: item?.pubDate,
         isoDate: item?.isoDate,
       });
-
-      // // save article to db for collection
-      // const existing = await Article.findOne({ url: link }).exec();
-      // if (!existing) {
-      //   const article = {
-      //     url: link,
-      //     title: item.title,
-      //     isoDate: new Date(item.isoDate),
-      //     userFullName: userFullName,
-      //     userUsername: userUsername,
-      //   };
-      //   await Article.create(article);
-      // }
     }
     const sortedContent = sortFeedContent(feedContent);
     res.json({ [feed.title]: sortedContent });
