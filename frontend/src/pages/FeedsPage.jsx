@@ -41,14 +41,18 @@ const FeedsPage = () => {
       </Typography>
       <IconButton
         variant="contained"
-        sx={{ marginBottom: 2, marginTop: 2 }}
+        sx={{ marginTop: 2 }}
         onClick={() => setFeedModalOpen(true)}>
         <AddCircleOutline fontSize="large" />
       </IconButton>
-      <Button onClick={() => handleMultipleAddModalOpen("Reddit")}>
+      <Button
+        sx={{ marginTop: 2 }}
+        onClick={() => handleMultipleAddModalOpen("Reddit")}>
         Add Reddit
       </Button>
-      <Button onClick={() => handleMultipleAddModalOpen("YouTube")}>
+      <Button
+        sx={{ marginTop: 2, marginBottom: 2 }}
+        onClick={() => handleMultipleAddModalOpen("YouTube")}>
         Add Youtube
       </Button>
       <FeedsList

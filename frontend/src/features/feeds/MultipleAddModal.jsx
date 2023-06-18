@@ -14,7 +14,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useAddFeedMutation } from "./feedsApiSlice";
-import { useForm } from "react-hook-form";
 import { Cancel } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -46,9 +45,11 @@ const MultipleAddModal = ({
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const promises = feedsArr.map((submission) => addFeed(submission));
-      console.log("promises", promises);
-      const results = await Promise.all(promises);
+      const add_req_promises = feedsArr.map((submission) =>
+        addFeed(submission)
+      );
+      console.log("promises", add_req_promises);
+      const results = await Promise.all(add_req_promises);
       console.log("res", results);
       setMultipleAddModalOpen(false);
     } catch (err) {
@@ -63,6 +64,8 @@ const MultipleAddModal = ({
       .trim()
       .split(",");
     let formatted;
+    console.log(feedsArr);
+    // Youtube modal type expects full correct channel url
     if (modalType === "YouTube") {
       formatted = entries.map((entry) => ({ url: entry }));
     } else {
@@ -101,9 +104,11 @@ const MultipleAddModal = ({
               textAlign={"center"}
               variant="body2"
               sx={{ marginBottom: 2 }}>
-              Instead of finding your own urls, enter names in a comma delimited
+              {modalType === "YouTube"
+                ? "Paste full channel URLs , in a comma delimited list"
+                : `Instead of finding your own urls, enter names in a comma delimited
               list. For more customization, edit each entry after submission.
-              Ensure the URLs look valid before submitting (no spaces).
+              Ensure the URLs look valid before submitting (no spaces).`}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -122,8 +127,8 @@ const MultipleAddModal = ({
           <Grid item xs={12}>
             {modalType === "Reddit" && (
               <Typography>
-                {feedsArr.map((subreddit, index) => (
-                  <span key={index}>{subreddit.url} </span>
+                {feedsArr.map((feed, index) => (
+                  <span key={index}>{feed.url} </span>
                 ))}
               </Typography>
             )}
