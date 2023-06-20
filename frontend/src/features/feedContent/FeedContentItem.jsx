@@ -18,16 +18,34 @@ const FeedContentItem = ({ item }) => {
         state={item}>
         <Typography variant="body1">{item.title}</Typography>
       </Link>
-      <Typography
-        variant="body2"
-        display="inline-list-item"
-        sx={{ whiteSpace: "pre" }}>
-        {item?.feedTitle ? item.feedTitle + "\t\t\t" : null}
-        {timeSince ? `${timeSince} ${unit} ago` + "\t\t\t" : null}
-        <Link target="_blank" href={item.link}>
-          Source
-        </Link>
-      </Typography>
+      <Grid container>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography
+            variant="body2"
+            display="inline-list-item"
+            sx={{ whiteSpace: "pre" }}>
+            {item?.feedTitle}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography
+            variant="body2"
+            display="inline-list-item"
+            sx={{ whiteSpace: "pre" }}>
+            {timeSince ? `${timeSince} ${unit} ago` + "\t\t\t" : null}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <Typography
+            variant="body2"
+            display="inline-list-item"
+            sx={{ whiteSpace: "pre" }}>
+            <Link target="_blank" href={item.link}>
+              Source
+            </Link>
+          </Typography>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

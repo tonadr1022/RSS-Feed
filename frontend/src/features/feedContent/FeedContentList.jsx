@@ -6,7 +6,7 @@ const FeedContentList = ({ feedContent, type }) => {
     ? feedContent.sortedContent
     : feedContent;
   return (
-    <Grid container padding={2}>
+    <Grid container padding={2} spacing={2}>
       {articles.map((item, index) => (
         <FeedContentItem key={index} type={type} item={item} />
       ))}

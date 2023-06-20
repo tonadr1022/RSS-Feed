@@ -31,8 +31,8 @@ const App = () => {
         palette: {
           mode,
           background: {
-            default: mode === "light" ? "#f3f3f3" : "#1d1d1d",
-            paper: mode === "light" ? "#d6d6d6" : "#212121",
+            default: mode === "light" ? "#ebebeb" : "#192b28",
+            paper: mode === "light" ? "#d6d6d6" : "#27243b",
           },
           // primary: {
           //   main: "#00845a",
